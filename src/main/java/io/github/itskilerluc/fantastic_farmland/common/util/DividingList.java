@@ -1,11 +1,15 @@
 package io.github.itskilerluc.fantastic_farmland.common.util;
 
 import com.google.common.collect.HashBiMap;
+import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.ints.IntIntPair;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class DividingList<T> implements List<T> {
     private final int[] values;
@@ -16,6 +20,7 @@ public class DividingList<T> implements List<T> {
     public DividingList(int slots) {
         this.values = new int[slots];
         this.slots = slots;
+        clear();
     }
 
     public int getSlots() {
@@ -55,33 +60,51 @@ public class DividingList<T> implements List<T> {
 
     @Override
     public boolean contains(Object o) {
-        return entries.values().stream().anyMatch(entry -> o.equals(entry.value()));
+        for (DividingEntry<T> entry : entries.values()) {
+            if (o.equals(entry.value())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @NotNull
     @Override
     public Iterator<T> iterator() {
-        return Arrays.stream(values).mapToObj(integer ->
-                Util.ifNotNull(entries.get(integer), DividingEntry::value)).iterator();
+        return Arrays.stream(values)
+                .mapToObj(this::getValue)
+                .iterator();
     }
 
     @NotNull
     @Override
     public Object @NotNull [] toArray() {
-        return Arrays.stream(values).mapToObj(integer ->
-                Util.ifNotNull(entries.get(integer), DividingEntry::value)).toList().toArray();
+        List<T> list = new ArrayList<>();
+        for (int value : values) {
+            T t = getValue(value);
+            list.add(t);
+        }
+        return list.toArray();
     }
 
     @NotNull
     @Override
     public <T1> T1 @NotNull [] toArray(@NotNull T1 @NotNull [] a) {
-        return Arrays.stream(values).mapToObj(integer ->
-                Util.ifNotNull(entries.get(integer), DividingEntry::value)).toList().toArray(a);
+        List<T> list = new ArrayList<>();
+        for (int value : values) {
+            T t = getValue(value);
+            list.add(t);
+        }
+        return list.toArray(a);
     }
 
     @Override
     public boolean add(T t) {
         return add(t, getFreeSlot(1), 1);
+    }
+
+    public boolean add(T t, int size) {
+        return add(t, getFreeSlot(size), size);
     }
 
     public int getFreeSlot(int size) {
@@ -125,7 +148,7 @@ public class DividingList<T> implements List<T> {
     @Override
     public boolean containsAll(@NotNull Collection<?> c) {
         for (Object o : c) {
-            if(!contains(o)) return false;
+            if (!contains(o)) return false;
         }
         return true;
     }
@@ -161,7 +184,16 @@ public class DividingList<T> implements List<T> {
 
     @Override
     public boolean retainAll(@NotNull Collection<?> c) {
-        return false;
+        for (int value : values) {
+            var result = entries.get(value);
+            if (result != null) {
+                if (c.contains(result.value)) {
+                    continue;
+                }
+            }
+            remove(result);
+        }
+        return true;
     }
 
     @Override
@@ -174,56 +206,159 @@ public class DividingList<T> implements List<T> {
 
     @Override
     public T get(int index) {
-        return Util.ifNotNull(entries.get(values[index]), DividingEntry::value);
+        return getValue(values[index]);
+    }
+
+    public T getValue(int key) {
+        return Util.ifNotNull(entries.get(key), DividingEntry::value);
     }
 
     @Override
     public T set(int index, T element) {
-        var element = Util.ifNotNull(values[index]
-
-        return null;
+        var old = get(index);
+        var entry = new DividingEntry<>(element, 1);
+        entries.put(entry.hashCode(), entry);
+        values[index] = entry.hashCode();
+        return old;
     }
 
     @Override
     public void add(int index, T element) {
-
+        var old = get(index);
+        if (old == null) {
+            set(index, element);
+        }
     }
 
     @Override
     public T remove(int index) {
-        return null;
+        var old = get(index);
+        entries.remove(old.hashCode());
+        var empty = new DividingEntry<T>(null, 1);
+        entries.put(empty.hashCode(), empty);
+        values[index] = empty.hashCode();
+        return old;
     }
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        for (int i = 0; i < values.length; i++) {
+            if (o.equals(getValue(i))) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        for (int i = values.length - 1; i >= 0; i--) {
+            if (o.equals(getValue(i))) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @NotNull
     @Override
     public ListIterator<T> listIterator() {
-        return null;
+        List<T> list = new ArrayList<>();
+        for (int value : values) {
+            T t = getValue(value);
+            list.add(t);
+        }
+        return list.listIterator();
     }
 
     @NotNull
     @Override
     public ListIterator<T> listIterator(int index) {
-        return null;
+        List<T> list = new ArrayList<>();
+        for (int value : values) {
+            T t = getValue(value);
+            list.add(t);
+        }
+        return list.listIterator(index);
     }
 
     @NotNull
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        return List.of();
+        List<T> list = new ArrayList<>();
+        long limit = toIndex - fromIndex;
+        long toSkip = fromIndex;
+        for (int value : values) {
+            T t = getValue(value);
+            if (toSkip > 0) {
+                toSkip--;
+                continue;
+            }
+            if (limit-- == 0) break;
+            list.add(t);
+        }
+        return list;
     }
 
+    public void split(Function<T, Pair<T, T>> splitter, int... splits) {
+        for (int split : splits) {
+            if (get(split).equals(get(split + 1))) {
+                var entry = getEntry(split);
+                int size = entry.size;
 
-    record DividingEntry<T>(@Nullable T value, int size) {
+                var entryStartIndex = indexOf(entry.value());
+                int index = split - entryStartIndex;
+
+                IntIntPair dividedSizes = IntIntPair.of(index + 1, size - index - 1);
+                Pair<T, T> dividedValue = splitter.apply(entry.value());
+
+                var first = new DividingEntry<T>(dividedValue.first(), dividedSizes.firstInt());
+                var second = new DividingEntry<T>(dividedValue.second(), dividedSizes.secondInt());
+
+                entries.put(first.hashCode(), first);
+                entries.put(second.hashCode(), second);
+                entries.remove(entry.hashCode());
+
+                values[split] = first.hashCode();
+                values[split + 1] = second.hashCode();
+            }
+        }
+    }
+
+    public void join(BiFunction<T, T, T> joiner, int... junctions) {
+        for (int junction : junctions) {
+            if (get(junction).equals(get(junction + 1))) {
+                var entry = getEntry(junction);
+                int firstSize = entry.size;
+
+                var secondEntry = getEntry(junction + 1);
+                int secondSize = secondEntry.size;
+
+                entries.remove(entry.hashCode());
+                entries.remove(secondEntry.hashCode());
+
+                var newEntry = new DividingEntry<T>(joiner.apply(entry.value(), secondEntry.value()),
+                        firstSize + secondSize);
+
+                entries.put(newEntry.hashCode(), newEntry);
+                values[junction] = newEntry.hashCode();
+                values[junction + 1] = newEntry.hashCode();
+            }
+        }
+    }
+
+    public void fill(T element) {
+        entries.clear();
+        var entry = new DividingEntry<>(element, slots);
+        entries.put(entry.hashCode(), entry);
+        Arrays.fill(values, entry.hashCode());
+    }
+
+    public DividingEntry<T> getEntry(int index) {
+        return entries.get(values[index]);
+    }
+
+    public record DividingEntry<T>(@Nullable T value, int size) {
         public boolean isEmpty() {
             return value == null;
         }

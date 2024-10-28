@@ -3,19 +3,16 @@ package io.github.itskilerluc.fantastic_farmland.common.blocks.fantasticfarmland
 public class FarmlandLayer {
     private final FarmlandMaterial material;
 
-    public final int size;
     private int features;
 
-    public FarmlandLayer(FarmlandMaterial material, int size) {
+    public FarmlandLayer(FarmlandMaterial material) {
         this.material = material;
         this.features = 0b0;
-        this.size = size;
     }
 
-    public FarmlandLayer(FarmlandMaterial material, int features, int size) {
+    public FarmlandLayer(FarmlandMaterial material, int features) {
         this.material = material;
         this.features = features;
-        this.size = size;
     }
 
     public void setFeature(int feature, boolean val) {
@@ -24,5 +21,9 @@ public class FarmlandLayer {
         } else {
             features ^= feature;
         }
+    }
+
+    public static FarmlandLayer copy(FarmlandLayer layer) {
+        return new FarmlandLayer(layer.material, layer.features);
     }
 }
