@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "fantastic_farmland:block/dirt_splitter",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "fantastic_farmland:block/dirt_splitter"
+    },
+    "facing=south": {
+      "model": "fantastic_farmland:block/dirt_splitter",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fantastic_farmland:block/dirt_splitter",
+      "y": 270
+    }
+  }
+}
