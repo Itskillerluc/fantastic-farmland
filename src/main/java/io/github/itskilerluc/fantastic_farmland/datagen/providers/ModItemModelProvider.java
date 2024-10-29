@@ -14,5 +14,8 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         simpleBlockItem(BlockRegistry.DIRT_SPLITTER.get());
+        simpleBlockItem(BlockRegistry.DEFAULT_DIRT.get());
+        simpleBlockItem(BlockRegistry.FAST_DIRT.get());
+        simpleBlockItem(BlockRegistry.FORTUNE_DIRT.get());
     }
 }

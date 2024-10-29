@@ -1,2 +1,5 @@
-// 1.21.1	2024-10-28T13:41:52.5764809	Item Models: fantastic_farmland
+// 1.21.1	2024-10-29T10:55:11.7817211	Item Models: fantastic_farmland
+33984fb4d2be99ea0d4da8945a3620328e148c07 assets/fantastic_farmland/models/item/default_dirt.json
 88d5fe4a6660d516b76c9a9f27c4f3def3622c88 assets/fantastic_farmland/models/item/dirt_splitter.json
+43212bfd090455cce878ab712473f08c3e4510c7 assets/fantastic_farmland/models/item/fast_dirt.json
+7758e7197e302e9dac1e2c437b3fd127aa5149c8 assets/fantastic_farmland/models/item/fortune_dirt.json

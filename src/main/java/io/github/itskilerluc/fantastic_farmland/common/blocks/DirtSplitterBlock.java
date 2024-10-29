@@ -20,14 +20,10 @@ public class DirtSplitterBlock extends HorizontalDirectionalBlock {
     private static final MapCodec<DirtSplitterBlock> CODEC = simpleCodec(DirtSplitterBlock::new);
 
     private static final VoxelShape EMPTY = Shapes.join(Shapes.block(), Shapes.or(
-            Shapes.box(3, 3, 0, 13, 13, 16),
-            Shapes.box(3, 0, 3, 13, 16, 13),
-            Shapes.box(0, 3, 3, 16, 13, 13)
+            box(1, 1, 0, 15, 15, 16),
+            box(1, 0, 1, 15, 16, 15),
+            box(0, 1, 1, 16, 15, 15)
     ), BooleanOp.ONLY_FIRST);
-
-    private static final VoxelShape TEST = Shapes.or(Shapes.box(3, 3, 0, 13, 13, 16),
-            Shapes.box(3, 0, 3, 13, 16, 13),
-            Shapes.box(0, 3, 3, 16, 13, 13));
 
     public DirtSplitterBlock(Properties properties) {
         super(properties);
@@ -57,7 +53,7 @@ public class DirtSplitterBlock extends HorizontalDirectionalBlock {
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return TEST;
+        return EMPTY;
     }
 
     @Override

@@ -1,2 +1,8 @@
-// 1.21.1	2024-10-28T13:41:52.5362958	Block States: fantastic_farmland
+// 1.21.1	2024-10-29T10:55:11.7797201	Block States: fantastic_farmland
+c73dbbf3b8025fb0e5d4af3964cd6fb5c6b870dd assets/fantastic_farmland/blockstates/default_dirt.json
 f98ebae463ef53ba029dbaed8eb8b7f1437e1079 assets/fantastic_farmland/blockstates/dirt_splitter.json
+6c2f4586296bfb088b274223ee7101f344203258 assets/fantastic_farmland/blockstates/fast_dirt.json
+f8222fad8e68d10f6733727b165c770fc19f7282 assets/fantastic_farmland/blockstates/fortune_dirt.json
+a9e399392b98827e89467f132ed297c7aa1f56ad assets/fantastic_farmland/models/block/default_dirt.json
+1bb81fc2bb65bbafba39adfd6d7d2f4f4e363a4c assets/fantastic_farmland/models/block/fast_dirt.json
+d5c0bba1e2c529384fa863ca25b8a3ee8a575a2f assets/fantastic_farmland/models/block/fortune_dirt.json

@@ -1,3 +1,6 @@
 {
-  "block.fantastic_farmland.dirt_splitter": "Dirt Splitter"
+  "block.fantastic_farmland.default_dirt": "Default Dirt",
+  "block.fantastic_farmland.dirt_splitter": "Dirt Splitter",
+  "block.fantastic_farmland.fast_dirt": "Fast Dirt",
+  "block.fantastic_farmland.fortune_dirt": "Fortune Dirt"
 }

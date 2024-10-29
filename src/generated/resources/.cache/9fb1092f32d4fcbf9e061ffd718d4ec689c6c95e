@@ -1,1 +1,7 @@
-// 1.21.1	2024-10-28T13:41:52.5764809	Recipes
+// 1.21.1	2024-10-29T13:17:54.2383506	Recipes
+01d6c0bac1581a3c41c2eed4fbaf87395d26e35f data/fantastic_farmland/advancement/recipes/default_dirt.json
+3240a3130aab88d16844849ad54799ca788e8657 data/fantastic_farmland/advancement/recipes/fast_dirt.json
+f786ab51b40e02afbb49d8bbffe89481af5e2208 data/fantastic_farmland/advancement/recipes/fortune_dirt.json
+51ff15478565796dcc25b877d8aae4906bf4d5b1 data/fantastic_farmland/recipe/default_dirt.json
+4c55f38f60729a7891c5cbb213da71994262c46d data/fantastic_farmland/recipe/fast_dirt.json
+31813ca6e203b06c4ae77d7ddf4432c190d18228 data/fantastic_farmland/recipe/fortune_dirt.json

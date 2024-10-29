@@ -15,5 +15,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         horizontalBlock(BlockRegistry.DIRT_SPLITTER.get(),
                 models().getExistingFile(FantasticFarmland.rl("block/dirt_splitter")));
+        simpleBlock(BlockRegistry.DEFAULT_DIRT.get());
+        simpleBlock(BlockRegistry.FAST_DIRT.get());
+        simpleBlock(BlockRegistry.FORTUNE_DIRT.get());
     }
 }

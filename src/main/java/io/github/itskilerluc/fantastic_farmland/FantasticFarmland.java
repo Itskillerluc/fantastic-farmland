@@ -1,8 +1,6 @@
 package io.github.itskilerluc.fantastic_farmland;
 
-import io.github.itskilerluc.fantastic_farmland.common.init.BlockRegistry;
-import io.github.itskilerluc.fantastic_farmland.common.init.CreativeTabRegistry;
-import io.github.itskilerluc.fantastic_farmland.common.init.ItemRegistry;
+import io.github.itskilerluc.fantastic_farmland.common.init.*;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -18,6 +16,8 @@ public class FantasticFarmland
         BlockRegistry.BLOCKS.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
         CreativeTabRegistry.CREATIVE_MODE_TABS.register(modEventBus);
+        RecipeSerializerRegistry.RECIPE_SERIALIZERS.register(modEventBus);
+        RecipeTypeRegistry.RECIPE_TYPES.register(modEventBus);
     }
 
     public static ResourceLocation rl(String path) {

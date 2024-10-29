@@ -21,5 +21,9 @@ public class ModBlockTagProvider extends BlockTagsProvider {
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         tag(BlockTags.MINEABLE_WITH_AXE)
                 .add(BlockRegistry.DIRT_SPLITTER.get());
+        tag(BlockTags.MINEABLE_WITH_SHOVEL)
+                .add(BlockRegistry.DEFAULT_DIRT.get())
+                .add(BlockRegistry.FAST_DIRT.get())
+                .add(BlockRegistry.FORTUNE_DIRT.get());
     }
 }

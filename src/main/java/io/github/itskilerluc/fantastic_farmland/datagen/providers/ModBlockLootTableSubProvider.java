@@ -23,5 +23,8 @@ public class ModBlockLootTableSubProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         dropSelf(BlockRegistry.DIRT_SPLITTER.get());
+        dropSelf(BlockRegistry.DEFAULT_DIRT.get());
+        dropSelf(BlockRegistry.FAST_DIRT.get());
+        dropSelf(BlockRegistry.FORTUNE_DIRT.get());
     }
 }

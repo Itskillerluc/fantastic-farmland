@@ -10,4 +10,13 @@ public class ItemRegistry {
 
     public static final DeferredItem<BlockItem> DIRT_SPLITTER =
             ITEMS.registerSimpleBlockItem(BlockRegistry.DIRT_SPLITTER);
+
+    public static final DeferredItem<BlockItem> DEFAULT_DIRT =
+            ITEMS.registerSimpleBlockItem(BlockRegistry.DEFAULT_DIRT);
+
+    public static final DeferredItem<BlockItem> FAST_DIRT =
+            ITEMS.registerSimpleBlockItem(BlockRegistry.FAST_DIRT);
+
+    public static final DeferredItem<BlockItem> FORTUNE_DIRT =
+            ITEMS.registerSimpleBlockItem(BlockRegistry.FORTUNE_DIRT);
 }

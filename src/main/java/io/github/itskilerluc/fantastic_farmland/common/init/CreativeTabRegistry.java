@@ -1,7 +1,7 @@
 package io.github.itskilerluc.fantastic_farmland.common.init;
 
 import io.github.itskilerluc.fantastic_farmland.FantasticFarmland;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 public class CreativeTabRegistry {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
-            DeferredRegister.create(BuiltInRegistries.CREATIVE_MODE_TAB, FantasticFarmland.MOD_ID);
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, FantasticFarmland.MOD_ID);
 
     public static final Supplier<CreativeModeTab> FANTASTIC_FARMLAND = CREATIVE_MODE_TABS.register("fantastic_farmland",
             () -> CreativeModeTab.builder()

@@ -3,7 +3,6 @@ package io.github.itskilerluc.fantastic_farmland.common.blockentities;
 import io.github.itskilerluc.fantastic_farmland.common.blocks.fantasticfarmlandblock.FarmlandLayer;
 import io.github.itskilerluc.fantastic_farmland.common.blocks.fantasticfarmlandblock.FarmlandMaterial;
 import io.github.itskilerluc.fantastic_farmland.common.util.DividingList;
-import it.unimi.dsi.fastutil.Pair;
 
 public class FarmlandSettings {
     public static final int HOPPER = 0b1;
@@ -16,10 +15,8 @@ public class FarmlandSettings {
     private final DividingList<FarmlandLayer> layers = new DividingList<>(5);
     private int shape;
 
-    public FarmlandSettings() {
-        layers.fill(new FarmlandLayer(FarmlandMaterial.DEFAULT));
-        layers.split(entry -> Pair.of(FarmlandLayer.copy(entry), FarmlandLayer.copy(entry)), 0, 1, 3);
-        layers.join((first, second) -> FarmlandLayer.copy(first), 0);
+    public FarmlandSettings(FarmlandMaterial material) {
+        layers.fill(new FarmlandLayer(material));
     }
 
 
