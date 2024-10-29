@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "fantastic_farmland:block/fast_dirt"
+  }
+}

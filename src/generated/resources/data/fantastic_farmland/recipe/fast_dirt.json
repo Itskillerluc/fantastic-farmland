@@ -1,0 +1,13 @@
+{
+  "type": "fantastic_farmland:cauldron_soak_recipe",
+  "fluid": "fantastic_farmland:speed",
+  "input": {
+    "item": "minecraft:dirt"
+  },
+  "layers": 4,
+  "output": {
+    "count": 1,
+    "id": "fantastic_farmland:fast_dirt"
+  },
+  "soak_time": 100
+}
