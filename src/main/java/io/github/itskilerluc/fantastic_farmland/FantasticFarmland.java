@@ -3,7 +3,6 @@ package io.github.itskilerluc.fantastic_farmland;
 import io.github.itskilerluc.fantastic_farmland.common.init.*;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 
 @Mod(FantasticFarmland.MOD_ID)
@@ -13,6 +12,7 @@ public class FantasticFarmland
 
     public FantasticFarmland(IEventBus modEventBus)
     {
+        BlockEntityRegistry.BLOCK_ENTITY_TYPES.register(modEventBus);
         BlockRegistry.BLOCKS.register(modEventBus);
         ItemRegistry.ITEMS.register(modEventBus);
         CreativeTabRegistry.CREATIVE_MODE_TABS.register(modEventBus);

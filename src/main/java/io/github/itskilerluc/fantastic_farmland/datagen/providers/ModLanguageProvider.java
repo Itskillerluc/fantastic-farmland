@@ -32,7 +32,7 @@ public class ModLanguageProvider extends LanguageProvider {
         }
     }
 
-    private String toEnglishTranslation(ResourceLocation rl) {
+    public static String toEnglishTranslation(ResourceLocation rl) {
         return Arrays.stream(rl.getPath().split("_"))
                 .map(word -> Character.toTitleCase(word.charAt(0)) + word.substring(1))
                 .collect(Collectors.joining(" "));

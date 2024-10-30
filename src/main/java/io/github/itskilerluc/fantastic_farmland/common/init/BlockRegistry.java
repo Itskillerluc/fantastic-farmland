@@ -3,6 +3,7 @@ package io.github.itskilerluc.fantastic_farmland.common.init;
 import io.github.itskilerluc.fantastic_farmland.FantasticFarmland;
 import io.github.itskilerluc.fantastic_farmland.common.blocks.DirtSplitterBlock;
 import io.github.itskilerluc.fantastic_farmland.common.blocks.FantasticDirtBlock;
+import io.github.itskilerluc.fantastic_farmland.common.blocks.SoakingCauldronBlock;
 import io.github.itskilerluc.fantastic_farmland.common.blocks.fantasticfarmlandblock.FarmlandMaterial;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -29,4 +30,7 @@ public class BlockRegistry {
     public static final DeferredBlock<Block> FORTUNE_DIRT = BLOCKS.registerBlock("fortune_dirt",
             props -> new FantasticDirtBlock(props, FarmlandMaterial.FORTUNE),
             BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).mapColor(MapColor.TERRACOTTA_BLUE));
+
+    public static final DeferredBlock<Block> SOAKING_CAULDRON = BLOCKS.registerBlock("soaking_cauldron",
+            SoakingCauldronBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON));
 }

@@ -1,10 +1,11 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "io.github.itskilerluc.fantastic_farmland.mixin",
+  "package": "io.github.itskilerluc.fantastic_farmland.common.mixins",
   "compatibilityLevel": "JAVA_8",
   "refmap": "fantastic_farmland.refmap.json",
   "mixins": [
+    "LayeredCauldronMixin"
   ],
   "client": [
   ],

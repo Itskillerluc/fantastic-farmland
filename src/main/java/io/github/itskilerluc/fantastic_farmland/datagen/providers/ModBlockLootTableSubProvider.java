@@ -5,6 +5,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -26,5 +27,6 @@ public class ModBlockLootTableSubProvider extends BlockLootSubProvider {
         dropSelf(BlockRegistry.DEFAULT_DIRT.get());
         dropSelf(BlockRegistry.FAST_DIRT.get());
         dropSelf(BlockRegistry.FORTUNE_DIRT.get());
+        dropOther(BlockRegistry.SOAKING_CAULDRON.get(), Blocks.CAULDRON);
     }
 }

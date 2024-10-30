@@ -1,9 +1,12 @@
 package io.github.itskilerluc.fantastic_farmland.datagen.providers;
 
 import io.github.itskilerluc.fantastic_farmland.FantasticFarmland;
+import io.github.itskilerluc.fantastic_farmland.common.blocks.SoakingCauldronBlock;
 import io.github.itskilerluc.fantastic_farmland.common.init.BlockRegistry;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class ModBlockStateProvider extends BlockStateProvider {
@@ -18,5 +21,17 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlock(BlockRegistry.DEFAULT_DIRT.get());
         simpleBlock(BlockRegistry.FAST_DIRT.get());
         simpleBlock(BlockRegistry.FORTUNE_DIRT.get());
+        getVariantBuilder(BlockRegistry.SOAKING_CAULDRON.get())
+                .forAllStates(blockState ->
+                        switch (blockState.getValue(SoakingCauldronBlock.LEVEL)) {
+                            case 1 -> ConfiguredModel.builder().modelFile(
+                            models().getExistingFile(ResourceLocation.withDefaultNamespace("block/water_cauldron_level1"))).build();
+                            case 2 -> ConfiguredModel.builder().modelFile(
+                            models().getExistingFile(ResourceLocation.withDefaultNamespace("block/water_cauldron_level2"))).build();
+                            case 3 -> ConfiguredModel.builder().modelFile(
+                            models().getExistingFile(ResourceLocation.withDefaultNamespace("block/water_cauldron_full"))).build();
+                            default ->
+                                    throw new IllegalStateException("Unexpected value: " + blockState.getValue(SoakingCauldronBlock.LEVEL));
+                        });
     }
 }

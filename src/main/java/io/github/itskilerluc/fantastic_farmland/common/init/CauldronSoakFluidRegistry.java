@@ -5,8 +5,12 @@ import io.github.itskilerluc.fantastic_farmland.common.recipes.cauldronsoakrecip
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+
+import java.util.List;
 
 public class CauldronSoakFluidRegistry {
     public static final ResourceKey<CauldronSoakFluid> SPEED_FLUID =
@@ -25,14 +29,14 @@ public class CauldronSoakFluidRegistry {
         context.register(SPEED_FLUID, new CauldronSoakFluid(NonNullList.of(
                 Ingredient.EMPTY,
                 Ingredient.of(Items.REDSTONE_BLOCK)),
-                0xFF0000));
+                0xFF0000, List.of(new MobEffectInstance(MobEffects.DIG_SPEED, 600))));
         context.register(FORTUNE_FLUID, new CauldronSoakFluid(NonNullList.of(
                 Ingredient.EMPTY,
                 Ingredient.of(Items.LAPIS_BLOCK)),
-                0x0000FF));
+                0x0000FF, List.of(new MobEffectInstance(MobEffects.LUCK, 1200, 1))));
         context.register(DEFAULT_FLUID, new CauldronSoakFluid(NonNullList.of(
                 Ingredient.EMPTY,
                 Ingredient.of()),
-                0xFFFFFF));
+                0xFFFFFF, List.of()));
     }
 }

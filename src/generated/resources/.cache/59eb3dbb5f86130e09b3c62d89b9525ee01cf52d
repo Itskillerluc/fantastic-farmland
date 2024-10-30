@@ -1,5 +1,6 @@
-// 1.21.1	2024-10-29T10:55:11.7807196	Loot Tables
+// 1.21.1	2024-10-29T15:24:07.5489644	Loot Tables
 ef79b191829729ed1e1d4bbe44e0902b69474e38 data/fantastic_farmland/loot_table/blocks/default_dirt.json
 cfa0841a37532b8f583428895a346f924c53c867 data/fantastic_farmland/loot_table/blocks/dirt_splitter.json
 26554f4568feac3b30998701c81aa2c388c565ee data/fantastic_farmland/loot_table/blocks/fast_dirt.json
 efc624fdf1ea21d25b4413f67228fd887605b45f data/fantastic_farmland/loot_table/blocks/fortune_dirt.json
+80f0b4206c56e1122084be7805c9244f68e109ef data/fantastic_farmland/loot_table/blocks/soaking_cauldron.json

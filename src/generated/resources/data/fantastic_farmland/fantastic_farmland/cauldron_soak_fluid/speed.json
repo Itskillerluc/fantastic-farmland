@@ -1,5 +1,16 @@
 {
   "color": 16711680,
+  "effects": [
+    {
+      "duration": 600,
+      "id": "minecraft:haste",
+      "neoforge:cures": [
+        "milk",
+        "protected_by_totem"
+      ],
+      "show_icon": true
+    }
+  ],
   "ingredients": [
     {
       "item": "minecraft:redstone_block"
