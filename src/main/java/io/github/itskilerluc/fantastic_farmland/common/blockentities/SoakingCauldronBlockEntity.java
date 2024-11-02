@@ -6,6 +6,7 @@ import io.github.itskilerluc.fantastic_farmland.common.init.DatapackRegistryRegi
 import io.github.itskilerluc.fantastic_farmland.common.recipes.cauldronsoakrecipe.CauldronSoakFluid;
 import io.github.itskilerluc.fantastic_farmland.common.util.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -18,12 +19,23 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SoakingCauldronBlockEntity extends BlockEntity {
+    public final ItemStackHandler itemHandler = new ItemStackHandler(1) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+            if (!level.isClientSide) {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
+        }
+    };
+
     private ResourceKey<CauldronSoakFluid> fluidKey;
     public List<ItemStack> extraItems = new ArrayList<>();
 
@@ -73,6 +85,7 @@ public class SoakingCauldronBlockEntity extends BlockEntity {
             extraItemsTag.add(stack.save(registries));
         }
         tag.put("extraItems", extraItemsTag);
+        tag.put("input", itemHandler.serializeNBT(registries));
     }
 
     @Override
@@ -84,6 +97,8 @@ public class SoakingCauldronBlockEntity extends BlockEntity {
         extraItems = new ArrayList<>(tag.getList("extraItems", 10).stream()
                 .map(itemTag -> ItemStack.parse(registries, itemTag).orElse(ItemStack.EMPTY))
                 .toList());
+
+        itemHandler.deserializeNBT(registries, tag.getCompound("input"));
     }
 
     public CauldronSoakFluid getFluid() {
@@ -100,5 +115,11 @@ public class SoakingCauldronBlockEntity extends BlockEntity {
         if (level != null) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 8);
         }
+    }
+
+    public @Nullable ItemStackHandler getItemStackHandler(Direction context) {
+        if (context == null) return itemHandler;
+        if (context.getAxis().isHorizontal()) return itemHandler;
+        return null;
     }
 }

@@ -1,19 +1,23 @@
 package io.github.itskilerluc.fantastic_farmland.common.blocks;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import io.github.itskilerluc.fantastic_farmland.common.blockentities.SoakingCauldronBlockEntity;
 import io.github.itskilerluc.fantastic_farmland.common.init.DatapackRegistryRegistry;
+import io.github.itskilerluc.fantastic_farmland.common.init.RecipeTypeRegistry;
 import io.github.itskilerluc.fantastic_farmland.common.recipes.cauldronsoakrecipe.CauldronSoakFluid;
+import io.github.itskilerluc.fantastic_farmland.common.recipes.cauldronsoakrecipe.CauldronSoakRecipe;
 import io.github.itskilerluc.fantastic_farmland.common.util.Util;
 import io.github.itskilerluc.fantastic_farmland.datagen.providers.ModLanguageProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -24,6 +28,7 @@ import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
@@ -36,7 +41,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -87,8 +95,36 @@ public class SoakingCauldronBlock extends LayeredCauldronBlock implements Entity
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         CauldronInteraction cauldroninteraction = this.interactions.map().get(stack.getItem());
-        if (cauldroninteraction == null) return ItemInteractionResult.FAIL;
+        if (cauldroninteraction == null) {
+            if (isIngredient(stack, level, pos)) {
+                if (level.getBlockEntity(pos) instanceof SoakingCauldronBlockEntity blockEntity) {
+                    if (!blockEntity.itemHandler.isItemValid(0, stack)) {
+                        return ItemInteractionResult.FAIL;
+                    }
+                    var result = blockEntity.itemHandler.insertItem(0, stack, false);
+                    if (result.equals(stack)) {
+                        return ItemInteractionResult.FAIL;
+                    } else {
+                        return ItemInteractionResult.SUCCESS;
+                    }
+                }
+                return ItemInteractionResult.SUCCESS;
+            }
+            return ItemInteractionResult.FAIL;
+        }
         return cauldroninteraction.interact(state, level, pos, player, hand, stack);
+    }
+
+    private boolean isIngredient(ItemStack stack, Level level, BlockPos pos) {
+        if (!(level.getBlockEntity(pos) instanceof SoakingCauldronBlockEntity blockEntity)) return false;
+        var recipes = level.getRecipeManager().getAllRecipesFor(RecipeTypeRegistry.CAULDRON_SOAK_RECIPE.get());
+        for (RecipeHolder<CauldronSoakRecipe> recipe : recipes) {
+            if (recipe.value().getInput().test(stack) &&
+                    recipe.value().getFluidKey().equals(blockEntity.getFluidKey())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -103,7 +139,7 @@ public class SoakingCauldronBlock extends LayeredCauldronBlock implements Entity
                                     Util.startsWith(Util.composite(blockEntity.getFluid().ingredients(),
                                                             Ingredient.of(item.getItem())).stream()
                                                     .filter(ingredient -> !ingredient.isEmpty()).toList()
-                                            ,fluid.value().ingredients().stream()
+                                            , fluid.value().ingredients().stream()
                                                     .filter(ingredient -> !ingredient.isEmpty()).toList()));
 
                     blockEntity.extraItems.add(item.getItem().copy());
@@ -132,5 +168,15 @@ public class SoakingCauldronBlock extends LayeredCauldronBlock implements Entity
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return EntityBlock.super.getTicker(level, state, blockEntityType);
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        super.animateTick(state, level, pos, random);
+        double d3 = (double)pos.getX() + random.nextDouble() * 0.1F;
+        double d8 = (double)pos.getY() + 1;
+        double d13 = (double)pos.getZ() + random.nextDouble();
+        var color = RenderSystem.getShaderColor();
+        level.addParticle(ParticleTypes.BUBBLE, d3, d8, d13, 0, 0.1, 0.0);
     }
 }

@@ -25,11 +25,17 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .forAllStates(blockState ->
                         switch (blockState.getValue(SoakingCauldronBlock.LEVEL)) {
                             case 1 -> ConfiguredModel.builder().modelFile(
-                            models().getExistingFile(ResourceLocation.withDefaultNamespace("block/water_cauldron_level1"))).build();
+                                    models().withExistingParent("soaking_cauldron_level1",
+                                            ResourceLocation.withDefaultNamespace("block/water_cauldron_level1"))
+                                            .texture("content", "block/cauldron")).build();
                             case 2 -> ConfiguredModel.builder().modelFile(
-                            models().getExistingFile(ResourceLocation.withDefaultNamespace("block/water_cauldron_level2"))).build();
+                                    models().withExistingParent("soaking_cauldron_level2",
+                                            ResourceLocation.withDefaultNamespace("block/water_cauldron_level2"))
+                                            .texture("content", "block/cauldron")).build();
                             case 3 -> ConfiguredModel.builder().modelFile(
-                            models().getExistingFile(ResourceLocation.withDefaultNamespace("block/water_cauldron_full"))).build();
+                                    models().withExistingParent("soaking_cauldron_full",
+                                            ResourceLocation.withDefaultNamespace("block/water_cauldron_full"))
+                                            .texture("content", "block/cauldron")).build();
                             default ->
                                     throw new IllegalStateException("Unexpected value: " + blockState.getValue(SoakingCauldronBlock.LEVEL));
                         });
